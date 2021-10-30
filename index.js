@@ -59,9 +59,17 @@ async function run(){
     app.post('/addOrder',(req,res)=>{
         console.log(req.body);
         orderCollection.insertOne(req.body).then(result => {
-            console.log(result);
+            res.send(result);
+            
         });
     } )
+
+    // get my orders
+    app.get('/myOrders/:email',async(req,res)=>{
+            console.log(req.params.email);
+           const result = await orderCollection.find({email:req.params.email}).toArray();
+           res.send(result); 
+    })
 
     }
 
