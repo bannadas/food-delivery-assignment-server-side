@@ -24,6 +24,9 @@ async function run(){
         const foodCollection = database.collection('items');
         const orderCollection = database.collection('orders');
 
+
+    
+
   // POST API
   app.post("/items", async (req, res) => {
       const item = req.body;
@@ -33,7 +36,21 @@ async function run(){
   console.log(result);
   res.send(result);
   });
+
+  // GET API
+  app.get('/items',async (req,res)=>{
+      const itemcollection = foodCollection.find({});
+      const items = await itemcollection.toArray();
+      res.send(items);
+
+  })
     }
+
+
+    
+
+   
+
     finally{
 
     }
