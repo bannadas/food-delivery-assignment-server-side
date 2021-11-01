@@ -17,8 +17,8 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 // console.log(uri);
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-async function run(){
-    try{
+async function run() {
+    try {
         await client.connect();
         console.log('connected to database');
         const database = client.db('FoodShop');
@@ -26,50 +26,47 @@ async function run(){
         const orderCollection = database.collection('orders');
 
 
-    
 
-  // POST API
-  app.post("/items", async (req, res) => {
-      const item = req.body;
-   
-  console.log('hit the post api',item);
-  const result = await foodCollection.insertOne(item);
-  console.log(result);
-  res.send(result);
-  });
 
-  // GET API
-  app.get('/items',async (req,res)=>{
-      const itemcollection = foodCollection.find({});
-      const items = await itemcollection.toArray();
-      res.send(items);
+        // POST API
+        app.post("/items", async (req, res) => {
+            const item = req.body;
 
-  })
-
-    
-    app.post('/addOrder',(req,res)=>{
-        console.log(req.body);
-        orderCollection.insertOne(req.body).then(result => {
+            console.log('hit the post api', item);
+            const result = await foodCollection.insertOne(item);
+            console.log(result);
             res.send(result);
-            
         });
-    } )
 
-    // get my orders
-    app.get('/myOrders/:email',async(req,res)=>{
-            console.log(req.params.email);
-           const result = await orderCollection.find({email:req.params.email}).toArray();
-           res.send(result); 
-    })
+        // GET API
+        app.get('/items', async (req, res) => {
+            const itemcollection = foodCollection.find({});
+            const items = await itemcollection.toArray();
+            res.send(items);
+        })
 
+
+        // POST ORDER API
+        app.post('/orders', async (req, res) => {
+            orders = req.body;
+            const result = await orderCollection.insertOne(orders);
+            res.json(result);
+        })
+
+        // GET ALLORDERS API
+        app.get('/allorders', async (req, res) => {
+            const cursor = orderCollection.find({});
+            const allOrders = await cursor.toArray();
+            res.send(allOrders);
+        })
     }
 
 
-    
 
-   
 
-    finally{
+
+
+    finally {
 
     }
 }
@@ -77,9 +74,9 @@ run().catch(console.dir);
 
 
 
-app.get('/',(req,res)=>{
+app.get('/', (req, res) => {
     res.send('Running the server')
 })
-app.listen(port,()=>{
-    console.log('Running on port',5000);
+app.listen(port, () => {
+    console.log('Running on port', 5000);
 })
