@@ -46,15 +46,6 @@ async function run(){
 
   })
 
-//   Delete product
-
-    app.delete('/deleteItem/:id', async(req,res)=>{
-        
-        console.log(req.params.id);
-        const result = await foodCollection.deleteOne({_id:ObjectId(req.params.id)
-        });
-        res.send(result);
-    })
     
     app.post('/addOrder',(req,res)=>{
         console.log(req.body);
